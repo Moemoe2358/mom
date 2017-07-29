@@ -1,0 +1,105 @@
+KPI:
+
+170430: Use LD -> 0.310(0.415)
+
+170501: change string into unicode -> 0.377(0.491)
+
+170502: LD /= 2 for the case that one string contains another -> 0.415(0.526)  
+5589 1331 524 4782
+
+170503a: pay attention to order of the disease list(based on frequency) and do the swap -> 0.440(0.555)
+5909 1397 535 4385
+
+170503b: expand to 5 -> 0.442(0.557) 
+
+170503c: Bug repaired and change LD /= 2 to LD -= 1 -> 0.451(0.574)
+6279 1161 459 4327
+
+170504: Use Jaccard similarity coefficient -> 0.471(0.600)
+
+170505: LD -= 0.1 for the case that one string contains another => 0.484(0.611)
+6663 1275 524 3763
+
+170506: Distance between discription and discription(3 diseases have duplicate) => 0.508(0.507)
+5418 1177 591 5039
+
+170507: EL1(2-1, 1-1, 1-2) => 0.535(0.596)
+5419 3220 627 2959
+
+170508: EL2(6 to 3) => 0.573(0.681)
+Score: 24302 25645
+Weight: 66827 99212(Submit: 62758 102300)
+7379 1481 615 2750
+
+170509a: duplicate removed => 0.577(0.685)
+7379 1581 618 2647
+Weight: 54470 95920
+
+170509b: normalization => 0.583(0.702)
+7618 1528 583 2496
+Weight: 83838 68539
+
+170510a: exclude stop_words for AL1 => 0.583(0.704)
+7649 1521 576 2479
+Weight: 88490 63976
+
+170510b: 4 to 3, -0.01 for double => 0.586(0.705)
+7665 1497 613 2450
+Weight: 87393 77208
+
+170511: balance the distance using frequency("nashi" normalized in AL1) => 0.591(0.709)
+7682 1521 665 2357
+Weight: 89544 75321
+
+170514: exclude stop_words for AL2 => 0.5989(0.7127)
+7741 1519 621 2344
+Weight: 87348 75972
+
+170515: go back to stop_word version1 => 0.5983(0.7123)
+7741 1505 642 2337
+Weight: 87447 76410
+
+Keep:
+
+• make use of this contest to coaching someone
+• Don't try too hard, be peaceful
+• Pay attention to programming style, use function and write comment
+• Watch the data(result) by my eyes, and try to do some analysis on the failure case
+• Three ways to get score up: improve AL1, improve AL2, improve EL or find AL3
+• Coaching someone if possible
+
+Problem:
+
+	Clear:
+	√ Too slow O(3n^2)-> write function to make it O(n^2)
+	√ No KPIs for local validation -> reproduce it for some extent(some problem remains unsolved)
+	√ need to change it into unicode? -> Absolutely, the result changes a lot
+	√ Something strange with the result in some case -> some character like "(" affects the result
+	√ pandas writing is extremely slow -> use set_value
+ 	
+ 	
+ 	Not only Fre-1-disease! It's the diseases have not appeared in train, something related to statictics
+ 	∆ how comes the gap between validation and test in AL1? -> almost all Fre-1-disease in test are not included in train, numeric experiment done
+ 	∆ Why the gap disappears with the AL2? -> Cannot predict Fre-1-disease in train as well(however very few Fre-1-disease in test can do this)
+
+	Rethink this one:
+ 	∆ How to take "nashi" into our logic -> solved with the ensemble learning version2 and take frequency into considerate
+
+Try:
+
+• Word base - keitaisokaiseki
+• Output the frequency of disease for our result(and accuracy)
+• zipf rule
+• nidannkai?
+
+	Done:
+
+	† specializeing the case that one string contains another -> LD -= 1 is the best one(-0.1 for Jaccard similarity coefficient)
+	† find frequency of every disease -> frequenceDisease.txt, and use this to balance the distance
+	† Find some that can replace LD -> Jaccard similarity coefficient
+ 	† Try a new algorithm: Distance between discription and discription
+ 	† Try ensemble learning version1 -> it works
+	† Try ensemble learning version2 -> it works better
+	† For EL2, normalization is need -> 0.5% up
+	† For EL2, exclude duplicated -> 0.5% up
+ 	† stop words -> works a little
